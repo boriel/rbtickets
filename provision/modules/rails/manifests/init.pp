@@ -1,8 +1,9 @@
 
-require curl
-require git
 
 class rails {
+    require mysql
+    require curl
+    require git
 
     Exec {
         logoutput => true,
