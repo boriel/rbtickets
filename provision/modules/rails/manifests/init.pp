@@ -27,5 +27,11 @@ class rails {
         creates => '/var/tmp/puppet.ruby_2_2_install.done',
         require => Exec['rvm_install']
     }
+
+    exec { 'tickets_gemset':
+        command => '/bin/bash -lc -- "rvm --create 2.2.0@tickets" && touch /var/tmp/puppet.ticket_gemset.done',
+        creates => '/var/tmp/puppet.ticket_gemset.done',
+        require => Exec['ruby_2_2_install']
+    }
 }
 
