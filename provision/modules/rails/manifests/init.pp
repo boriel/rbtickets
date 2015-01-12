@@ -33,5 +33,12 @@ class rails {
         creates => '/var/tmp/puppet.ticket_gemset.done',
         require => Exec['ruby_2_2_install']
     }
+
+    exec { 'rails_3_2_install':
+        command => '/bin/bash -lc -- "rvm use 2.2.0@tickets; gem install rails --version 3.2.16 && touch /var/tmp/puppet.rails_3_2_install.done"',
+        timeout => 0,
+        require => Exec['tickets_gemset'],
+        creates => '/var/tmp/puppet.rails_3_2_install.done'
+    }
 }
 
