@@ -5,7 +5,9 @@ require git
 class rails {
 
     Exec {
-        logoutput => true
+        logoutput => true,
+        user => 'vagrant',
+        environment => 'HOME=/home/vagrant'
     }
 
     exec { 'gpg_rvm':
@@ -22,7 +24,7 @@ class rails {
     }
 
     exec { 'ruby_2_2_install':
-        command => '/usr/local/rvm/bin/rvm install 2.2.0 && touch /var/tmp/puppet.ruby_2_2_install.done',
+        command => '/bin/bash -lc -- "rvm install 2.2.0 && touch /var/tmp/puppet.ruby_2_2_install.done"',
         timeout => 0,
         creates => '/var/tmp/puppet.ruby_2_2_install.done',
         require => Exec['rvm_install']
