@@ -5,7 +5,7 @@ class mysql {
         ensure => installed
     }
 
-    packate { 'libmysqlclient-dev':
+    package { 'libmysqlclient-dev':
         ensure => installed
     }
 
