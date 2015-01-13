@@ -4,6 +4,7 @@ class rails {
     require mysql
     require curl
     require git
+    require nodejs
 
     Exec {
         logoutput => true,
