@@ -1,0 +1,5 @@
+
+Simple REST client apps
+
+client.sh: a bash (curl) client, that reads the ticket #1 and insert a new one.
+
