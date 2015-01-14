@@ -9,4 +9,9 @@ class mysql {
         ensure => installed
     }
 
+    service { 'mysql':
+        ensure => running,
+        require => Package['mysql-server']
+    }
+
 }
