@@ -4,7 +4,7 @@ class mysql {
 
     exec { 'mariadb-key':
         command => '/usr/bin/sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db',
-        timeout => 0,
+        timeout => 0
     }
 
     file { '/etc/apt/sources.list.d/mariadb.list':
@@ -24,19 +24,35 @@ class mysql {
         require => Exec['apt-get-update']
     }
 
-    package { 'mariadb-server':
+    package { 'mariadb-galera-server':
         ensure => installed,
         require => Package['software-properties-common']
     }
 
     service { 'mysql':
         ensure => running, 
-        require => Package['mariadb-server']
+        require => Package['mariadb-galera-server']
     }
 
     package { 'libmariadbclient-dev':
         ensure => installed,
         require => Exec['apt-get-update']
+    }
+
+    file { '/root/.my.cnf':
+        mode => 600,
+        owner => root,
+        group => root,
+        source => 'puppet:///modules/mysql/root-mysql.cnf'
+    }
+
+    file { '/etc/mysql/my.cnf':
+        mode => 644,
+        owner => root,
+        group => root,
+        source => 'puppet:///modules/mysql/global-my.cnf',
+        require => Package['mariadb-galera-server'],
+        notify => Service['mysql']
     }
 
 }
