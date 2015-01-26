@@ -21,6 +21,10 @@ Vagrant.configure(2) do |config|
     m1.vm.network "private_network", ip: "10.1.0.10"   # 10.1.X.X = MySQL Cluster Space
   end
 
+  config.vm.define "mysql2" do |m2|
+    m2.vm.network "private_network", ip: "10.1.0.20"   # 10.1.X.X = MySQL Cluster Space
+  end
+
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
 
