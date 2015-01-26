@@ -28,6 +28,11 @@ Vagrant.configure(2) do |config|
 
   config.vm.define "mysql2" do |m2|
     m2.vm.network "private_network", ip: "10.1.0.20"   # 10.1.X.X = MySQL Cluster Space
+    m2.vm.provision "puppet" do |puppet|
+      puppet.module_path = "provision/modules"
+      puppet.manifests_path = "provision/manifests" 
+      puppet.manifest_file = "mysql2.pp"  # This could also be improved using a puppet server...
+    end
   end
 
   # Every Vagrant development environment requires a box. You can search for
