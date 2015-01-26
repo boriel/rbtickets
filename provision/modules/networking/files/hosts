@@ -10,4 +10,5 @@ ff02::3 ip6-allhosts
 
 10.1.0.10   mysql1.localnet mysql1
 10.1.0.20   mysql2.localnet mysql2
+10.1.0.30   mysql3.localnet mysql3
 
