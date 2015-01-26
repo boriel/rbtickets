@@ -19,6 +19,11 @@ Vagrant.configure(2) do |config|
 
   config.vm.define "mysql1" do |m1|
     m1.vm.network "private_network", ip: "10.1.0.10"   # 10.1.X.X = MySQL Cluster Space
+    m1.vm.provision "puppet" do |puppet|
+      puppet.module_path = "provision/modules"
+      puppet.manifests_path = "provision/manifests" 
+      puppet.manifest_file = "mysql1.pp"  # This could also be improved using a puppet server...
+    end
   end
 
   config.vm.define "mysql2" do |m2|
