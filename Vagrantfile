@@ -17,22 +17,20 @@ Vagrant.configure(2) do |config|
      vb.cpus = 1    
   end
 
-  config.vm.define "mysql1" do |m1|
-    m1.vm.network "private_network", ip: "10.1.0.10"   # 10.1.X.X = MySQL Cluster Space
-    m1.vm.provision "puppet" do |puppet|
-      puppet.module_path = "provision/modules"
-      puppet.manifests_path = "provision/manifests" 
-      puppet.manifest_file = "mysql1.pp"  # This could also be improved using a puppet server...
-    end
-  end
 
-  config.vm.define "mysql2" do |m2|
-    m2.vm.network "private_network", ip: "10.1.0.20"   # 10.1.X.X = MySQL Cluster Space
-    m2.vm.provision "puppet" do |puppet|
-      puppet.module_path = "provision/modules"
-      puppet.manifests_path = "provision/manifests" 
-      puppet.manifest_file = "mysql2.pp"  # This could also be improved using a puppet server...
+  1.upto 3 do |i|
+
+    config.vm.define "mysql#{i}" do |m|
+      m.vm.network "private_network", ip: "10.1.0.#{i}0"   # 10.1.X.X = MySQL Cluster Space
+
+      m.vm.provision "puppet" do |puppet|
+        puppet.module_path = "provision/modules"
+        puppet.manifests_path = "provision/manifests" 
+        puppet.manifest_file = "mysql-node.pp"  # This could also be improved using a puppet server...
+      end
+
     end
+  
   end
 
   # Every Vagrant development environment requires a box. You can search for
