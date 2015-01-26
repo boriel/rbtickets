@@ -1,6 +1,11 @@
 
 class mysql {
 
+    package { 'rsync':
+        ensure => installed,
+        require => Exec['apt-get-update'],
+        notify => Service['mysql']
+    }
 
     exec { 'mariadb-key':
         command => '/usr/bin/sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db',
@@ -51,6 +56,15 @@ class mysql {
         owner => root,
         group => root,
         source => 'puppet:///modules/mysql/global-my.cnf',
+        require => Package['mariadb-galera-server'],
+        notify => Service['mysql']
+    }
+
+    file { '/etc/mysql/conf.d/mariadb.cnf':
+        mode => 644,
+        owner => root,
+        group => root,
+        source => 'puppet:///modules/mysql/mariadb.cnf',
         require => Package['mariadb-galera-server'],
         notify => Service['mysql']
     }
