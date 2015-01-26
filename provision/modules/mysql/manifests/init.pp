@@ -1,6 +1,8 @@
 
 class mysql {
 
+    require networking
+
     package { 'rsync':
         ensure => installed,
         require => Exec['apt-get-update'],
