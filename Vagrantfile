@@ -18,10 +18,11 @@ Vagrant.configure(2) do |config|
   end
 
 
-  1.upto 3 do |i|
+  1.upto 2 do |i|
 
     config.vm.define "mysql#{i}" do |m|
       m.vm.network "private_network", ip: "10.1.0.#{i}0"   # 10.1.X.X = MySQL Cluster Space
+      m.vm.hostname = "mysql#{i}.localnet"
 
       m.vm.provision "puppet" do |puppet|
         puppet.module_path = "provision/modules"

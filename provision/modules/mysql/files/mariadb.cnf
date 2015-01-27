@@ -1,6 +1,7 @@
 [mysqld]
-wsrep_cluster_address = 'gcomm://'
+wsrep_cluster_address = gcomm://mysql1.localnet
 wsrep_provider = /usr/lib/galera/libgalera_smm.so
 wsrep_retry_autocommit = 0
-wsrep_sst_method = rsync
+#wsrep_sst_method = rsync
+wsrep_sst_auth=root:root1234
 

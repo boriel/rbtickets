@@ -3,6 +3,10 @@ class mysql {
 
     require networking
 
+    Exec {
+        path => '/usr/bin'
+    }
+
     package { 'rsync':
         ensure => installed,
         require => Exec['apt-get-update'],
@@ -41,6 +45,13 @@ class mysql {
         require => Package['mariadb-galera-server']
     }
 
+    exec { 'mysql-root-passwd':
+        command => 'mysql -e "SET wsrep_on = OFF; DELETE FROM mysql.user WHERE user = \'\';" && \
+            mysql -e "GRANT ALL PRIVILEGES ON *.* TO \'root\'@\'%\' IDENTIFIED BY \'root1234\' WITH GRANT OPTION;" && \
+            mysql -e "GRANT ALL PRIVILEGES ON *.* TO \'root\'@\'localhost\' IDENTIFIED BY \'root1234\' WITH GRANT OPTION;"',
+        require => Service['mysql']
+    }
+
     package { 'libmariadbclient-dev':
         ensure => installed,
         require => Exec['apt-get-update']
@@ -50,7 +61,8 @@ class mysql {
         mode => 600,
         owner => root,
         group => root,
-        source => 'puppet:///modules/mysql/root-mysql.cnf'
+        source => 'puppet:///modules/mysql/root-mysql.cnf',
+        require => Exec['mysql-root-passwd']
     }
 
     file { '/etc/mysql/my.cnf':
