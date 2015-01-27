@@ -48,8 +48,10 @@ class mysql {
     exec { 'mysql-root-passwd':
         command => 'mysql -e "SET wsrep_on = OFF; DELETE FROM mysql.user WHERE user = \'\';" && \
             mysql -e "GRANT ALL PRIVILEGES ON *.* TO \'root\'@\'%\' IDENTIFIED BY \'root1234\' WITH GRANT OPTION;" && \
-            mysql -e "GRANT ALL PRIVILEGES ON *.* TO \'root\'@\'localhost\' IDENTIFIED BY \'root1234\' WITH GRANT OPTION;"',
-        require => Service['mysql']
+            mysql -e "GRANT ALL PRIVILEGES ON *.* TO \'root\'@\'localhost\' IDENTIFIED BY \'root1234\' WITH GRANT OPTION;" && \
+            touch /var/tmp/mysql-root-passwd.puppet.done',
+        require => Service['mysql'],
+        creates => '/var/tmp/mysql-root-passwd.puppet.done'
     }
 
     package { 'libmariadbclient-dev':
@@ -74,13 +76,5 @@ class mysql {
         notify => Service['mysql']
     }
 
-    file { '/etc/mysql/conf.d/mariadb.cnf':
-        mode => 644,
-        owner => root,
-        group => root,
-        source => 'puppet:///modules/mysql/mariadb.cnf',
-        require => Package['mariadb-galera-server'],
-        notify => Service['mysql']
-    }
-
 }
+
